@@ -9,66 +9,56 @@ A simple Instagram-like application built with Django, allowing users to create 
 - Like and comment on photos
 - Follow and unfollow users
 - News feed of followed users
-- Search functionality to find users
 
 ## Tech Stack
 - **Backend**: Django, Django Rest Framework
-- **Frontend**: Django Templates
+- **Frontend**: Django Templates and Bootstrap5 with django-crispy-forms
 - **Database**: SQLite (for development)
 - **Storage**: Local storage (for development)
 
 ## Setup Instructions
 
 ### Prerequisites
+
 - Django 5.1.2
 - Virtualenv (Optional but recommended)
 
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/rjardi/django-instagram.git
    cd django-instagram-clone
+   ```
    
-Create and activate virtual environment
+2. **Create and activate virtual environment**
 
-python3 -m venv venv
-source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+   ```
 
-Install dependencies
+3. **Install dependencies**
 
-pip install -r requirements.txt
-Run migrations
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-python manage.py migrate
-Create a superuser (admin)
+4. **Run migrations**
 
-python manage.py createsuperuser
-Run the server
+   ```bash
+   python manage.py migrate
+   ```
 
-python manage.py runserver
-Visit http://127.0.0.1:8000 to view the app.
+5. **Create a superuser (admin)**
 
-Environment Variables
-Create a .env file in the project root to set the environment variables for the project:
+   ```bash
+   python manage.py createsuperuser
+   ```
+6. **Run the server**
 
-DEBUG=True
-SECRET_KEY='your-secret-key'
-DATABASE_URL='your-database-url'  # If using a cloud database like PostgreSQL
-Testing
-Run the following command to execute tests:
-
-Contribution Guidelines
-Fork the repository.
-Create a new branch for your feature:
-
-git checkout -b feature-name
-Commit your changes:
-
-git commit -m 'Add some feature'
-Push to the branch:
-
-git push origin feature-name
-Open a pull request.
-License
-This project is licensed under the MIT License.
+   ```bash
+   python manage.py runserver
+   ```
+7. **Visit http://127.0.0.1:8000 to view the app.**
