@@ -9,12 +9,16 @@ class UserProfile(models.Model):
     birth_date=models.DateField('Fecha de nacimiento', null=True, blank=True)
     followers=models.ManyToManyField("self", symmetrical=False, related_name="following", through='Follow')
 
-    def __str__(self):
-        return self.name
-    
     class Meta:
         verbose_name = 'Perfil'
         verbose_name_plural = 'Perfiles'
+    
+    def __str__(self):
+        return self.user.username
+    
+    def follow(self, profile):
+        Follow.objects.get_or_create(follower=self, following=profile)
+
 
 
 class Follow(models.Model) :

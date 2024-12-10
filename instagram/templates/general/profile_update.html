@@ -7,18 +7,17 @@
 {% block page_content %}
 <div class="container">
     {% include '_includes/_messages.html' %}
-    <h1>Registro</h1>
-    <form action="" method="post">
+    <h1>Editar Perfil</h1>
+    <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="row">
             <div class="col-12 col-md-6">
-                {{ form.first_name|as_crispy_field }}
-                {{ form.username|as_crispy_field }}
-                {{ form.email|as_crispy_field }}
-                {{ form.password|as_crispy_field }}
+                {{ form.bio|as_crispy_field }}
+                {{ form.birth_date|as_crispy_field }}
+                {{ form.profile_picture|as_crispy_field }}
             </div>
         </div>
-        <input type="submit" value="Registrarse" class="btn btn-primary">
+        <input type="submit" value="Actualizar" class="btn btn-primary">
     </form>
 </div>
 {% endblock %}

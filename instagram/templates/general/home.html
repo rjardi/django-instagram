@@ -1,11 +1,22 @@
 {% extends "general/layout.html" %}
 
-{% block head_title %}Bienvenido a nuestro InstaConquer{% endblock %}
+{% block head_title %}Instagram{% endblock %}
 
 {% block page_content %}
 <div class="container">
     {% include '_includes/_messages.html' %}
     <h1>Homepage</h1>
-    <p>Este es el contenido de la página home</p>
+    <section>
+        <h2>Ultimas publicaciones</h2>
+        <div class="row">
+            {% for post in last_posts  %}
+                <div class="col-12 col-sm-6 col-md-4">
+                    {% include "_includes/posts/_post.html" %}
+                </div>
+            {% endfor %}
+            
+        </div>
+    </section>
+
 </div>
 {% endblock %}
