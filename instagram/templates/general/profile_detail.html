@@ -1,5 +1,5 @@
 {% extends "general/layout.html" %}
-
+{% load crispy_forms_tags %}
 {% block head_title %}Bienvenido a nuestro InstaConquer{% endblock %}
 
 {% block page_content %}
@@ -15,19 +15,19 @@
     {% endif %}
     <p>Seguidores: {{profile.followers.count}} </p>  
     <p>Seguidos: {{profile.followers.count}} </p> 
-    {% if profile not in request.user.profile.follower_set.all %}
-    <p>No lo estoy siguiendo</p>
-    <p>
-        <form method="post">
-            {% csrf_token %}
-            <input type="hidden" name="profile_pk" value="{{profile.pk}}">
-            <button>Seguir</button>
-        </form>
-    </p>
-    {% endif %}
     <!-- Solamente mostrar el boton de editar el perfil cuando es el mismo usuario que esta en la sesión-->
     {% if profile.user == request.user %}
         <p><a href="{% url "profile_update" profile.pk %}">Editar</a></p> 
+    {% else %}
+        <form method="post">
+            {% csrf_token %}
+            {{form.profile_pk|as_crispy_field}}
+            {% if following %}
+                <button type="submit">Dejar de seguir</button>
+            {% else %}
+                <button type="submit">Seguir</button>
+            {% endif %}
+        </form>
     {% endif %}
 
     <section>
