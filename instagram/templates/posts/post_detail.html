@@ -30,8 +30,8 @@
                     <img class="img-fluid img-responsive" src="{{post.image.url}}">
                 </div>  
                 <div class="text-center">
-                    <p>{{post.likes.all.count }} 
-                        <a href="{% url "post_like" post.pk %}">
+                    <p><span id="nLikes">{{post.likes.all.count }} </span>
+                        <a id="likeButton" href="{% url "post_like_ajax" post.pk %}">
                         {% if request.user in post.likes.all %}
                             <i class="bi bi-heart-fill"></i>
                         {% else %}
@@ -46,5 +46,28 @@
 
     
 </div>
+
+<script>
+    const likeButton =document.getElementById("likeButton")
+    let nLikesSpan=document.getElementById("nLikes");
+    nLikes=parseInt(nLikesSpan.innerHTML);
+
+    likeButton.addEventListener('click', (event)=>{
+        event.preventDefault();
+        fetch(likeButton.href)
+        .then(response=> response.json())
+        .then(data=>{
+            if (data.liked){
+                likeButton.innerHTML='<i class="bi bi-heart-fill"></i>';
+                nLikes+=1;
+                nLikesSpan.innerHTML=nLikes;
+            }else{
+                likeButton.innerHTML='<i class="bi bi-heart"></i>';
+                nLikes-=1;
+                nLikesSpan.innerHTML=nLikes;
+            }
+        });
+    });
+</script>
 {% endblock %}
 

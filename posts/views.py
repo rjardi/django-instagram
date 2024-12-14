@@ -1,5 +1,5 @@
 from django.forms import BaseModelForm
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse, reverse_lazy
 from django.views.generic.edit import CreateView
 from django.views.generic.detail import DetailView
@@ -44,6 +44,28 @@ def like_post(request, pk):
         messages.add_message(request, messages.INFO, "Te gusta esta publicación")
 
     return HttpResponseRedirect(reverse('post_detail', args=[pk]))
+
+@login_required
+def like_post_ajax(request, pk):
+
+    post=Post.objects.get(pk=pk)
+    if request.user in post.likes.all():
+        post.likes.remove(request.user)
+        return JsonResponse(
+            {
+            'message':'Ya no te gusta esta publicación',
+            'liked':False
+            }
+        )
+    else:   
+        post.likes.add(request.user)
+        return JsonResponse(
+            {
+            'message':'Te gusta esta publicación',
+            'liked':True
+            }
+        )
+
 
 
 
