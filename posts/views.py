@@ -7,7 +7,7 @@ from posts.models import Post
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
-from .forms import PostCreateForm
+from .forms import PostCreateForm, CommentCreateForm
 from django.contrib import messages
 # Create your views here.
 
@@ -26,11 +26,21 @@ class PostCreateView(CreateView):
     
 
 @method_decorator(login_required, name="dispatch")
-class PostDetailView(DetailView):
+class PostDetailView(DetailView, CreateView):
     
     template_name="posts/post_detail.html"
     model=Post
     context_object_name="post"
+    form_class=CommentCreateForm
+
+    def form_valid(self, form):
+        form.instance.user=self.request.user
+        form.instance.post=self.get_object()
+        return super(PostDetailView, self).form_valid(form)
+
+    def get_success_url(self):
+        messages.add_message(self.request, messages.SUCCESS, "Comentario creado correctamente")  
+        return reverse('post_detail', args=[self.get_object().pk])
 
 @login_required
 def like_post(request, pk):
@@ -50,7 +60,9 @@ def like_post_ajax(request, pk):
 
     post=Post.objects.get(pk=pk)
     if request.user in post.likes.all():
-        post.likes.remove(request.user)
+        # post.likes.remove(request.user)
+        request.user.profile.unlike_post(post)
+        post.unlike(request.user)
         return JsonResponse(
             {
             'message':'Ya no te gusta esta publicación',
@@ -58,7 +70,9 @@ def like_post_ajax(request, pk):
             }
         )
     else:   
-        post.likes.add(request.user)
+        # post.likes.add(request.user)
+        # post.like(request.user)
+        request.user.profile.like_post(post)
         return JsonResponse(
             {
             'message':'Te gusta esta publicación',

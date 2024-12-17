@@ -1,5 +1,7 @@
 {% extends "general/layout.html" %}
 
+{% load crispy_forms_tags %}
+
 {% block head_title %}Bienvenido a nuestro InstaConquer{% endblock %}
 
 {% block page_content %}
@@ -29,7 +31,8 @@
                 <div class="feed-image p-2 px-3">
                     <img class="img-fluid img-responsive" src="{{post.image.url}}">
                 </div>  
-                <div class="text-center">
+                <div class="text-center p-2 px-3">
+                    {% if request.user.is_authenticated %}
                     <p>
                         <a class="likeButton" href="{% url "post_like_ajax" post.pk %}">
                             <span>{{post.likes.all.count }} </span>
@@ -40,7 +43,44 @@
                             {% endif %}
                         </a>
                     </p> 
+                    {% endif %}
+
                 </div>
+                <section class="comments">
+                    <h5>Comentarios</h5>
+                    {% if post.comments.all.count %}
+                        {% for comment in post.comments.all %}
+                            <article>
+                                <header>
+                                    <strong>Autor: </strong>{{comment.user}} <strong>creado el: </strong>{{comment.created_at}}
+                                </header>
+                                <div>
+                                    <p>{{comment.text}}</p>
+                                </div>
+                            </article>
+                        {% endfor %}
+                    {% else %}
+                        <p>Todavía no hay comentarios para esta publiucación</p>
+                    {% endif %}
+                    <div>
+                        <details>
+                            <summary>Nuevo comentario</summary>
+                            <form method="post">
+                                <div class="row">
+                                    <div class="col_col-12">
+                                        {% csrf_token %}
+                                        {{form.text|as_crispy_field}}
+                                    </div>
+                                    <div class="col col-12">
+                                        <button class="btn btn-sm btn-primary">Publicar</button>
+                                    </div>
+                                </div>
+                            </form> 
+                        </details>
+
+                    </div>
+
+                </section>
             </div>
         </article>
     </div>

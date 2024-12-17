@@ -17,7 +17,20 @@ class UserProfile(models.Model):
         return self.user.username
     
     def follow(self, profile):
-        Follow.objects.get_or_create(follower=self, following=profile)
+        follow, created=Follow.objects.get_or_create(follower=self, following=profile)
+        return created
+    
+    def unfollow(self, profile):
+        if Follow.objects.filter(follower=self, following=profile).count():
+            Follow.objects.filter(follower=self, following=profile).delete()
+            return True
+        return False
+    
+    def like_post(self, post):
+        post.like(self.user)
+    
+    def unlike_post(self, post):
+        post.unlike(self.user)
 
 
 

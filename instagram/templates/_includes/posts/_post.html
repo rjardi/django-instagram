@@ -22,6 +22,7 @@
         </div>
         <footer>
             <div class="text-center">
+                {% if request.user.is_authenticated %}
                 <p>
                     <a href="{% url "post_like_ajax" post.pk %}" class="likeButton">
                         <span>{{post.likes.all.count }} </span>
@@ -31,8 +32,11 @@
                         <i class="bi bi-heart"></i>
                     {% endif %}
                     </a> 
-
+                    {{post.comments.all.count}}
+                    <i class="bi bi-chat-dots"></i>
                 </p> 
+                {% endif %}
+
             </div>
             <p class="text-center mt-3 mb-3">
                 <a class="btn btn-primary btn-sm" role="button" href="{% url "post_detail" post.pk %}">Ver post</a>
